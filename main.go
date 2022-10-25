@@ -40,12 +40,17 @@ func compressImg(source string, forh uint) error {
 	case strings.HasSuffix(name, ".png"):
 		width, _ = getWidthHeightForPng(sb)
 		if img, err = png.Decode(file); err != nil {
-			panic(err)
+			if img, err = jpeg.Decode(file); err != nil {
+				panic(err)
+			}
 		}
 	case strings.HasSuffix(name, ".jpg"):
 		width, _ = getWidthHeightForJpg(sb)
 		if img, err = jpeg.Decode(file); err != nil {
-			panic(err)
+			if img, err = png.Decode(file); err != nil {
+				log.Printf("file at: %s", file.Name())
+				return nil
+			}
 		}
 	default:
 		err = fmt.Errorf("Images %s name not right!", name)
@@ -138,7 +143,7 @@ func getFilelist(path string) []string {
 func main() {
 	fs := getFilelist("test")
 	for _, f := range fs {
-		if err := compressImg(f, 500); err != nil {
+		if err := compressImg(f, 0); err != nil {
 			panic(err)
 		}
 	}
