@@ -41,7 +41,8 @@ func compressImg(source string, forh uint) error {
 		width, _ = getWidthHeightForPng(sb)
 		if img, err = png.Decode(file); err != nil {
 			if img, err = jpeg.Decode(file); err != nil {
-				panic(err)
+				log.Printf("file at: %s", file.Name())
+				return nil
 			}
 		}
 	case strings.HasSuffix(name, ".jpg"):
@@ -143,7 +144,7 @@ func getFilelist(path string) []string {
 func main() {
 	fs := getFilelist("test")
 	for _, f := range fs {
-		if err := compressImg(f, 0); err != nil {
+		if err := compressImg(f, 800); err != nil {
 			panic(err)
 		}
 	}
