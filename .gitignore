@@ -1,0 +1,6 @@
+# this is .gitignore file.
+.idea
+.DS_Store
+vendor
+.vscode
+models/dto
